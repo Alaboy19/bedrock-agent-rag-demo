@@ -19,7 +19,7 @@ poetry install --no-root
 poetry self add poetry-plugin-shell
  ```   
 
-3. Activate the virtual environment with 
+3. Create or activate the virtual environment(if already exists) with 
 ```sh 
 poetry shell 
  ```  
