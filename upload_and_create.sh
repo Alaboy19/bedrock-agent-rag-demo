@@ -33,3 +33,5 @@ terraform apply -auto-approve
 # Export Lambda ARN as an environment variable
 export LAMBDA_FUNCTION_ARN=$(terraform output -raw lambda_arn)
 echo "Lambda function deployed. ARN exported as environment variable: $LAMBDA_FUNCTION_ARN"
+
+cd ..
