@@ -60,7 +60,7 @@ So, follow steps in creating kb in aws bedrock console in [here](kb_console.txt)
 python src/agent/agent_build.py 
  ```
 
-Agent_build.py returns kb_id and agent_id that is passed to src/agent_chat.py
+Agent_build.py returns knowledebase_id and agent_id and sets them as env variable
 
 ## Stage 4. Create CLI interaction
 ```sh 
