@@ -35,6 +35,7 @@ It is for Amazon OpenSearch Serverless and KnowledgeBase delete
 ```
 Agent Role Policy:
 * AmazonBedrockFullAccess
+1. Add permissions -> Custom policy(json) 
 Custom policy for accessing model and agent invoking
 ```
 {
@@ -68,3 +69,26 @@ Custom policy for accessing model and agent invoking
     ]
 }
 ```
+2. Go to Trust entities, edit trust policy and paste this -> 
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AmazonBedrockAgentBedrockFoundationModelPolicyProd",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "bedrock.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole",
+            "Condition": {
+                "StringEquals": {
+                    "aws:SourceAccount": "{YOUR ACCOUNT ID}"
+                },
+                "ArnLike": {
+                    "aws:SourceArn": "arn:aws:bedrock:us-east-1:{YOUR ACCOUNT ID}:agent/*"
+                }
+            }
+        }
+    ]
+}
+
