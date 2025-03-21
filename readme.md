@@ -29,6 +29,7 @@ poetry shell
 
 
 ## Setup your aws credentials
+Set up credentials for created aws account to which the account role is given in prev step, point 1
 ```sh 
 aws confgiure 
   ``` 
