@@ -50,9 +50,9 @@ Create .env variables and set these:
  ``` 
 ## Stage 2. Create knowledgebase from these docs 
 
-Ideally run following command, but could not managed to finish this part on time, so just used console for that.
+Ideally run following command with terraform, but could not managed to finish data sync part from s3 to vector database on time, so just used console for that.
 ```sh 
-python3 src/kb/create_kb.py 
+./deploy_kb.sh
  ``` 
 So, follow steps in creating kb in aws bedrock console in [here](kb_console.txt)
 
