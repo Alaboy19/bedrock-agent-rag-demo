@@ -51,20 +51,20 @@ Create .env variables and set these:
 
 Ideally run following command, but could not managed to finish this part on time, so just used console for that.
 ```sh 
-python3 src/create_kb.py 
+python3 src/kb/create_kb.py 
  ``` 
 So, follow steps in creating kb in aws bedrock console in [here](kb_console.txt)
 
 ## Stage 3. Build agent 
 ```sh 
-python src/agent_build.py 
+python src/agent/agent_build.py 
  ```
 
 Agent_build.py returns kb_id and agent_id that is passed to src/agent_chat.py
 
 ## Stage 4. Create CLI interaction
 ```sh 
- python src/agent_build.py
+ python src/agent/agent_chat.py
   ```
 
 This initates the CLI chat with agent that has some limited capabilites for demo.
