@@ -1,16 +1,16 @@
-## Pre-requesites:
-1. Install Python 
+## Pre-requesites:(assuming you have brew installed)
+1. Install Python(if you don't have one) 
 ```sh
 brew install python
  ``` 
-2. Install poetry
+2. Install poetry (poetry is is a dependency management and packaging tool for Python that simplifies project setup, handles virtual environments, and ensures consistent builds with a pyproject.toml configuration file)
 ```sh
 brew install poetry
  ``` 
 
 ## Setup poetry
 
-1. command: 
+1. Install dependencies(alternatively you can use pip install -r requriements.txt, in case you do not prefer to use poetry): 
 ```sh
 poetry install 
  ```   
@@ -25,7 +25,7 @@ poetry shell
  ```  
 ## Set up aws account and aws credentials. 
 1. Setup aws account and account role and give access to services  with IAM from [policies.txt](policies.txt)
-2. create aws account user and give these permissions with IAM to get access to bedrock [policies.txt](policies.txt)
+2. Create role for bedrock agent and give these permissions with IAM to get access to bedrock [policies.txt](policies.txt)
 
 
 ## Setup your aws credentials
