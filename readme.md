@@ -12,7 +12,7 @@ brew install poetry
 
 1. Install dependencies(alternatively you can use pip install -r requriements.txt, in case you do not prefer to use poetry): 
 ```sh
-poetry install 
+poetry install --no-root
  ```   
 2. command:
 ```sh 
