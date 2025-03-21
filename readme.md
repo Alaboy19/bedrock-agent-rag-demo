@@ -1,4 +1,4 @@
-## Pre-requesites:(assuming you have brew installed)
+## Pre-requesites(assuming you have brew installed)
 1. Install Python(if you don't have one) 
 ```sh
 brew install python
