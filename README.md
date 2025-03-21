@@ -25,7 +25,7 @@ poetry shell
  ```  
 ## Set up aws account and aws credentials. 
 1. Setup aws account and account role and give access to services  with IAM from [policies.txt](policies.txt)
-2. Create role for bedrock agent and give these permissions with IAM to get access to bedrock [policies.txt](policies.txt)
+2. Create role for bedrock agent and give these permissions with IAM to get access to bedrock [policies.txt](policies.txt), copy ARN
 
 
 ## Setup your aws credentials
@@ -40,7 +40,7 @@ Create .env variables and set these:
 2. AGENT_NAME=name of your agent
 3. S3_BUCKET_NAME=name of your s3 bucket
 4. FOUNDATION_MODEL='us.anthropic.claude-3-5-haiku-20241022-v1:0', the model to which you get access under your agent role below
-5. AGENT_RESOURCE_ROLE_ARN = agent_role resource name that you have created 
+5. AGENT_RESOURCE_ROLE_ARN = agent_role resource name that you have created in previously, step 2
 
 # Execution Stages. 
 
