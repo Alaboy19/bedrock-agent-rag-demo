@@ -24,8 +24,8 @@ poetry self add poetry-plugin-shell
 poetry shell 
  ```  
 ## Set up aws account and aws credentials. 
-1. Setup aws account and account role and give access to services  with IAM from [policies.txt](http://_vscodecontentref_/3)
-2. create aws account user and give these permissions with IAM to get access to bedrock [policies.txt](http://_vscodecontentref_/3)
+1. Setup aws account and account role and give access to services  with IAM from [policies.txt](policies.txt)
+2. create aws account user and give these permissions with IAM to get access to bedrock [policies.txt](policies.txt)
 
 
 ## Setup your aws credentials
@@ -53,7 +53,7 @@ Ideally run following command, but could not managed to finish this part on time
 ```sh 
 python3 src/create_kb.py 
  ``` 
-So, follow steps in creating kb in aws bedrock console in [here](http://_vscodecontentref_/7)
+So, follow steps in creating kb in aws bedrock console in [here](kb_console.txt)
 
 ## Stage 3. Build agent 
 ```sh 
