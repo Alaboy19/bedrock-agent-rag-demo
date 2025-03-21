@@ -50,7 +50,7 @@ Create .env variables and set these:
  ``` 
 ## Stage 2. Create knowledgebase from these docs 
 
-Ideally run following command with terraform, but could not managed to finish data sync part from s3 to vector database on time, so just used console for that.
+Ideally run following command with terraform, but COULD NOT MANAGE TO FINISH data sync part from s3 to vector database on time, so just used console for that.
 ```sh 
 ./deploy_kb.sh
  ``` 
