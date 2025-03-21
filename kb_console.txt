@@ -1,16 +1,17 @@
-KB parameters:
-Type: Knowledge base with vector store
-Name: knowledge-base-quick-start-nv84r
-Choose data source - s3
-S3 URI - s3://rag-bedrock-pdfs-iter1
-Parsing strategy - Amazon Bedrock default parser
-Chunking strategy:semantic chunking
-Max buffer size for comparing sentence group: 0
-Max token size for a chunk:300
-Breakpoint threshold for sentence group similarity:95
-Embeddings model: cohere, embedding english v3 - on demand 
-Vector store creation method:Quick create a new vector store 
-Vector store:Amazon OpenSearch Serverless
+On console, go to Aws bedrock -> knowledge base -> create
+Create it with following parameters:
+1. Type: Knowledge base with vector store
+2. Name: knowledge-base-quick-start-nv84r
+3. Choose data source - s3
+4. S3 URI - s3://rag-bedrock-pdfs-iter1
+5. Parsing strategy - Amazon Bedrock default parser
+6. Chunking strategy:semantic chunking
+7. Max buffer size for comparing sentence group: 0
+8. Max token size for a chunk:300
+9. Breakpoint threshold for sentence group similarity:95
+10. Embeddings model: cohere, embedding english v3 - on demand 
+11. Vector store creation method:Quick create a new vector store 
+12. Vector store:Amazon OpenSearch Serverless
 
 
 
