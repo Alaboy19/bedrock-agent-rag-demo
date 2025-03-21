@@ -4,7 +4,8 @@ Account Role Policy:
 * AmazonS3FullAccess
 * AmazonBedrockFullAccess
 * AmazonOpenSearchServiceFullAccess
-Custom policy for Amazon OpenSearch Serverless and KnowledgeBase delete
+Add permissions -> Custom policy(json) 
+It is for Amazon OpenSearch Serverless and KnowledgeBase delete
 ```
 {
     "Version": "2012-10-17",
