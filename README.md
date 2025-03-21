@@ -71,6 +71,9 @@ This initates the CLI chat with agent that has some limited capabilites for demo
 ## Simple System Diagram 
 ![Alt text](image.png)
 
+## Business logic 
+This agent helps expats to adapt in east Netherlands. It can help with general information looking up at his knowledge base. Also, it has some additional support functions and uses lambda handler to process it's actions. 
+
 
 
 
