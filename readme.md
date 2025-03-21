@@ -29,7 +29,7 @@ poetry shell
 
 
 ## Setup your aws credentials
-Set up credentials for created aws account to which the account role is given in prev step, point 1
+Set up credentials for created aws account to which the account role is given in prev step, point 1, you need to generate access key for this account to be able to use aws cli 
 ```sh 
 aws confgiure 
   ``` 
