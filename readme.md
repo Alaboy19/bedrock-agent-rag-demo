@@ -68,7 +68,7 @@ This initates the CLI chat with agent that has some limited capabilites for demo
  python src/agent/agent_chat.py
   ```
 
-## Diagram 
+## Simple System Diagram 
 ![Alt text](image.png)
 
 
