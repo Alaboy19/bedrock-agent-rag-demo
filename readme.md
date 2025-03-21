@@ -68,4 +68,9 @@ This initates the CLI chat with agent that has some limited capabilites for demo
  python src/agent/agent_chat.py
   ```
 
+## Diagram 
+![Uploading Screenshot 2025-03-21 at 12.11.06.png…]()
+
+
+
 
