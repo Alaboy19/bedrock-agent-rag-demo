@@ -1,0 +1,81 @@
+KB parameters:
+Type: Knowledge base with vector store
+Name: knowledge-base-quick-start-nv84r
+Choose data source - s3
+S3 URI - s3://rag-bedrock-pdfs-iter1
+Parsing strategy - Amazon Bedrock default parser
+Chunking strategy:semantic chunking
+Max buffer size for comparing sentence group: 0
+Max token size for a chunk:300
+Breakpoint threshold for sentence group similarity:95
+Embeddings model: cohere, embedding english v3 - on demand 
+Vector store creation method:Quick create a new vector store 
+Vector store:Amazon OpenSearch Serverless
+
+KB Service Role:
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "BedrockInvokeModelStatement",
+            "Effect": "Allow",
+            "Action": [
+                "bedrock:InvokeModel"
+            ],
+            "Resource": [
+                "arn:aws:bedrock:us-east-1::foundation-model/cohere.embed-english-v3"
+            ]
+        },
+        {
+            "Sid": "OpenSearchServerlessAPIAccessAllStatement",
+            "Effect": "Allow",
+            "Action": [
+                "aoss:APIAccessAll"
+            ],
+            "Resource": [
+                "arn:aws:aoss:us-east-1:971422704596:collection/wp8q5wckhxsl2ypo1sx1"
+            ]
+        },
+        {
+            "Sid": "S3ListBucketStatement",
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::my-knowledge-base-bucket-expats-rag"
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceAccount": [
+                        "971422704596"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "S3GetObjectStatement",
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::my-knowledge-base-bucket-expats-rag/*"
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceAccount": [
+                        "971422704596"
+                    ]
+                }
+            }
+        }
+    ]
+}
+```
+
+
+cd terraform-kb
+terraform init
+terraform apply -auto-approve

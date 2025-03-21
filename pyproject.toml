@@ -1,0 +1,26 @@
+[project]
+name = "rag-bedrock"
+version = "0.1.0"
+description = "Simple Bedrock Agent assistant for expats in east netherlands"
+authors = [
+    {name = "Alaboy19",email = "nurbados104@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13,<4"
+dependencies = [
+    "python-dotenv (>=1.0.1,<2.0.0)",
+    "boto3 (>=1.37.13,<2.0.0)",
+    "opensearch-py (>=2.8.0,<3.0.0)",
+    "retrying (>=1.3.4,<2.0.0)",
+    "pydantic (>=2.10.6,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+ruff = "^0.11.0"
+

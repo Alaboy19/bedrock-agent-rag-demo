@@ -1,0 +1,64 @@
+Account Role Policy: 
+* IAMFullAccess
+* AWSLambda_FullAccess
+* AmazonS3FullAccess
+* AmazonBedrockFullAccess
+* AmazonOpenSearchServiceFullAccess
+Custom policy for Amazon OpenSearch Serverless and KnowledgeBase delete
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "aoss:*",
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "bedrock:DeleteKnowledgeBase",
+                "bedrock:DeleteDataSource"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "bedrock:InvokeAgent"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+Agent Role Policy:
+* AmazonBedrockFullAccess
+Custom policy for accessing model and agent invoking
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AmazonBedrockAgentBedrockFoundationModelPolicyProd",
+            "Effect": "Allow",
+            "Action": [
+                "bedrock:InvokeModel",
+                "bedrock:InvokeModelWithResponseStream"
+            ],
+            "Resource": [
+                "arn:aws:bedrock:us-east-1::foundation-model/us.anthropic.claude-3-5-haiku-20241022-v1:0"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "bedrock:Retrieve",
+                "bedrock:GetKnowledgeBase",
+                "bedrock:ListKnowledgeBases"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```

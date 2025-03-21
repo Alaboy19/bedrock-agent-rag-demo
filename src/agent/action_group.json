@@ -1,0 +1,36 @@
+{
+    "functions": [
+        {
+            "name": "ask_support_team",
+            "description": "If no knowledge base answer exists, collect the user's email and send the query to support. Ask for the user's email and the query.",
+            "parameters": {
+                "user_email": {
+                    "description": "User's email for support follow-up. It is needed from user to send to support team",
+                    "required": true,
+                    "type": "string"
+                },
+                "query": {
+                    "description": "User's original question. It is needed from user to send to support team",
+                    "required": true,
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "weather_lookup",
+            "description": "Finds the weather for a specific location and date",
+            "parameters": {
+                "location": {
+                    "description": "City or place for weather lookup",
+                    "required": true,
+                    "type": "string"
+                },
+                "date": {
+                    "description": "Date for weather forecast (YYYY-MM-DD)",
+                    "required": true,
+                    "type": "string"
+                }
+            }
+        }
+    ]
+}
