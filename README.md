@@ -14,7 +14,7 @@ brew install poetry
 ```sh
 poetry install --no-root
  ```   
-2. command:
+2. add plugin "shell" to activate virtual env:
 ```sh 
 poetry self add poetry-plugin-shell
  ```   
