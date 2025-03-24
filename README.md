@@ -50,11 +50,15 @@ Create .env variables and set these:
  ``` 
 ## Stage 2. Create knowledgebase from these docs 
 
-Ideally run following command with terraform, but COULD NOT MANAGE TO FINISH data sync part from s3 to vector database on time, so just used console for that.
+Ideally run following command with terraform, but turns out last version, v5.92.0 terraform does not support  data sync from s3 to knowledge base yet. Instead, we can follow sdk with boto3 for that. First, need to create a collection with
 ```sh 
-./deploy_kb.sh
- ``` 
-So, follow steps in creating kb in aws bedrock console in [here](kb_console.txt)
+python src/kb/collection_build.py
+ ```
+Then, need to create index, then use it for knowlegde base with data sync from s3. Following the  
+```sh 
+python src/kb/kb_build.py
+ ```
+Alternatively, you can follow steps in creating kb in aws bedrock console in [here](kb_console.txt)
 
 ## Stage 3. Build agent 
 Agent_build.py returns knowledebase_id and agent_id and sets them as env variable
