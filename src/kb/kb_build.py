@@ -1,168 +1,91 @@
+import os
 import boto3
 import json
+import time 
+import pprint
+import random
+from dotenv import load_dotenv
+from opensearchpy import OpenSearch, RequestsHttpConnection, AWSV4SignerAuth, RequestError
+from kb_utils import (
+    interactive_sleep, create_bedrock_knowledge_base, create_data_source_and_sync
+)
 
-iam_client = boto3.client('iam')
-s3_client = boto3.client('s3')
-opensearch_client = boto3.client('opensearchserverless')
-bedrock_agent_client = boto3.client('bedrock-agent')
 
-# AM Role for Bedrock Knowledge Base
-def create_iam_role():
-    role_name = "BedrockKBServiceRole"
-    assume_role_policy = {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Principal": {"Service": "bedrock.amazonaws.com"},
-                "Action": "sts:AssumeRole"
-            }
-        ]
-    }
-
-    response = iam_client.create_role(
-        RoleName=role_name,
-        AssumeRolePolicyDocument=json.dumps(assume_role_policy)
+def create_index(index_name, kb_host, awsauth):
+    # Build the OpenSearch client
+    oss_client = OpenSearch(
+        hosts=[{'host': kb_host, 'port': 443}],
+        http_auth=awsauth,
+        use_ssl=True,
+        verify_certs=True,
+        connection_class=RequestsHttpConnection,
+        timeout=300
     )
 
-    policy_document = {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-            "Sid": "BedrockInvokeModelStatement",
-            "Effect": "Allow",
-            "Action": [
-                "bedrock:InvokeModel"
-            ],
-            "Resource": [
-                "arn:aws:bedrock:us-east-1::foundation-model/cohere.embed-multilingual-v3"
-            ]
-            },
-            {
-            "Sid": "OpenSearchServerlessAPIAccessAllStatement",
-            "Effect": "Allow",
-            "Action": [
-                "aoss:APIAccessAll"
-            ],
-            "Resource": [
-                "arn:aws:aoss:us-east-1:971422704596:collection/1r9mh7gxva7mt4ryu3jc"
-            ]
-            },
-            {
-            "Sid": "S3ListBucketStatement",
-            "Effect": "Allow",
-            "Action": [
-                "s3:ListBucket"
-            ],
-            "Resource": [
-                "arn:aws:s3:::rag-bedrock-pdfs-iter1"
-            ],
-            "Condition": {
-                "StringEquals": {
-                    "aws:ResourceAccount": [
-                        "971422704596"
-                    ]
-                }
-                }
-            },
-            {
-                "Sid": "S3GetObjectStatement",
-                "Effect": "Allow",
-                "Action": [
-                    "s3:GetObject"
-                ],
-                "Resource": [
-                    "arn:aws:s3:::rag-bedrock-pdfs-iter1/*"
-                ],
-                "Condition": {
-                    "StringEquals": {
-                        "aws:ResourceAccount": [
-                            "971422704596"
-                        ]
-                    }
-                }
-            }
-        ]
-    }
+    with open("src/kb/body.json", "r") as json_file:
+        body_json = json.load(json_file)
+        print("body_json: ", body_json)
+    try:
+        response = oss_client.indices.create(index=index_name, body=body_json)
+        print('\nCreating index:')
+        pp.pprint(response)
 
-    iam_client.put_role_policy(
-        RoleName=role_name,
-        PolicyName="BedrockKBPolicy",
-        PolicyDocument=json.dumps(policy_document)
-    )
+        # index creation can take up to a minute
+        interactive_sleep(60)
+    except RequestError as e:
+        # you can delete the index if its already exists
+        # oss_client.indices.delete(index=index_name)
+        print(f'Error while trying to create the index, with error {e.error}\nyou may unmark the delete above to delete, and recreate the index')
 
-    return response["Role"]["Arn"]
-
-# OpenSearch Serverless Collection
-def create_opensearch_collection():
-    response = opensearch_client.create_collection(
-        name="bedrock-kb-collection",
-        type="VECTORSEARCH",
-        description="Vector store for Bedrock KB",
-        encryptionPolicy={
-        "type": "AES256"  # Specify the encryption type (e.g., AES256 or AWS_KMS)
-    }
-    )
-    return response["collectionDetail"]["arn"]
-
-# Knowledge Base
-def create_bedrock_knowledge_base(role_arn, collection_arn):
-    response = bedrock_agent_client.create_knowledge_base(
-        name="rag-bedrock-kb",
-        roleArn=role_arn,
-        knowledgeBaseConfiguration={
-            "type": "VECTOR",
-            "vectorKnowledgeBaseConfiguration": {
-                "embeddingModelArn": "arn:aws:bedrock:us-west-2::foundation-model/cohere.embed-multilingual-v3:on-demand",
-                "embeddingModelConfiguration": {
-                    "bedrockEmbeddingModelConfiguration": {
-                        "dimensions": 1024,
-                        "embeddingDataType": "FLOAT32"
-                    }
-                },
-                "supplementalDataStorageConfiguration": {
-                    "storageLocation": {
-                        "type": "S3",
-                        "s3Location": {"uri": "s3://rag-bedrock-pdfs-iter1"}
-                    }
-                },
-                "chunkingConfiguration": {
-                    "chunkingStrategy": "SEMANTIC",
-                    "semanticChunkingConfiguration": {
-                        "maxBufferSize": 0,
-                        "maxTokens": 300,
-                        "sentenceSimilarityThreshold": 95
-                    }
-                }
-            }
-        },
-        storageConfiguration={
-            "type": "OPENSEARCH_SERVERLESS",
-            "opensearchServerlessConfiguration": {
-                "collectionArn": collection_arn,
-                "vectorIndexName": "bedrock-kb-index",
-                "fieldMapping": {
-                    "vectorField": "bedrock-kb-vector",
-                    "textField": "AMAZON_BEDROCK_TEXT_CHUNK",
-                    "metadataField": "AMAZON_BEDROCK_METADATA"
-                }
-            }
-        }
-    )
-    return response["knowledgeBase"]["knowledgeBaseArn"]
 
 
 if __name__ == "__main__":
-    print("Creating IAM Role...")
-    role_arn = create_iam_role()
-    print(f"IAM Role ARN: {role_arn}")
-
-    print("Creating OpenSearch Serverless Collection...")
-    collection_arn = create_opensearch_collection()
-    print(f"OpenSearch Collection ARN: {collection_arn}")
-
+    
+    load_dotenv()
+    suffix = os.getenv("SUFFIX")
+    REGION = os.getenv("REGION")
+    S3_BUCKET_NAME=os.getenv("S3_BUCKET_NAME")
+    VECTOR_STORE_NAME=os.getenv("COLLECTION_NAME") + f"-{suffix}"
+    index_name = f"{VECTOR_STORE_NAME}-index"
+ 
+    #Create index in OpenSearch
+    sts_client = boto3.client('sts')
+    boto3_session = boto3.session.Session()
+    iam_client = boto3_session.client('iam')
+    identity = boto3.client('sts').get_caller_identity()['Arn']
+    account_id = sts_client.get_caller_identity()["Account"]
+    account_number = boto3.client('sts').get_caller_identity().get('Account')
+    aoss_client = boto3_session.client('opensearchserverless')
+    credentials = boto3.Session().get_credentials()
+    pp = pprint.PrettyPrinter(indent=2)
+    awsauth = AWSV4SignerAuth(credentials, REGION, 'aoss')
+    
+    kb_host = os.getenv("KB_HOST")
+    
+    print("Creating index in OpenSearch for index name", index_name, kb_host, awsauth)
+    interactive_sleep(20)
+    create_index(index_name, kb_host, awsauth)
+    
+    #Create the AWS Bedrock Knowledge Base
+    client = boto3.client('bedrock-agent',  region_name=REGION)
     print("Creating AWS Bedrock Knowledge Base...")
-    kb_arn = create_bedrock_knowledge_base(role_arn, collection_arn)
+    kb_name = os.getenv("KNOWLEDGE_BASE_NAME") 
+    kb_role_arn = os.getenv("BEDROCK_KB_EXECUTION_ROLE_ARN")
+    collection_arn = os.getenv("COLLECTION_ARN")
+    kb_arn = create_bedrock_knowledge_base(client=client, 
+                                           name=kb_name, 
+                                           index_name=index_name, 
+                                           collection_arn=collection_arn, 
+                                           role_arn=kb_role_arn)
     print(f"Knowledge Base ARN: {kb_arn}")
+    interactive_sleep(20)
+    kb_id = kb_arn.split('/')[-1]
 
-    print("✅ AWS Bedrock Knowledge Base setup is complete!")
+    #Create data source and sync
+    create_data_source_and_sync(client=client, kb_id=kb_id, bucket_name=S3_BUCKET_NAME)
+    
+    
+
+
+
+ 
