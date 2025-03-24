@@ -1,0 +1,207 @@
+=====================================collection_build.py=====================================
+Creating collection...
+Creating collection...........
+Creating collection...........
+Creating collection...........
+Creating collection...........
+Creating collection...........
+Creating collection...........
+Creating collection...........
+..............................
+Collection successfully created:
+[ { 'arn': 'arn:aws:aoss:us-east-1:971422704596:collection/09d5yreen365xevahsld',
+    'collectionEndpoint': 'https://09d5yreen365xevahsld.us-east-1.aoss.amazonaws.com',
+    'createdDate': 1742849192706,
+    'dashboardEndpoint': 'https://09d5yreen365xevahsld.us-east-1.aoss.amazonaws.com/_dashboards',
+    'id': '09d5yreen365xevahsld',
+    'kmsKeyArn': 'auto',
+    'lastModifiedDate': 1742849421576,
+    'name': 'bedrock-vector-store-785',
+    'standbyReplicas': 'ENABLED',
+    'status': 'ACTIVE',
+    'type': 'VECTORSEARCH'}]
+Opensearch serverless arn:  arn:aws:iam::971422704596:policy/AmazonBedrockOSSPolicyForKnowledgeBase_785
+
+=====================================kb_build.py=====================================
+Creating index in OpenSearch for index name bedrock-vector-store-785-index 09d5yreen365xevahsld.us-east-1.aoss.amazonaws.com <opensearchpy.helpers.signer.AWSV4SignerAuth object at 0x11478a120>
+body_json:  {'settings': {'index.knn': 'true', 'number_of_shards': 1, 'knn.algo_param.ef_search': 512, 'number_of_replicas': 0}, 'mappings': {'properties': {'vector': {'type': 'knn_vector', 'dimension': 1024, 'method': {'name': 'hnsw', 'engine': 'faiss', 'space_type': 'l2'}, 'data_type': 'float'}, 'text': {'type': 'text'}, 'text-metadata': {'type': 'text'}}}}
+
+Creating index:
+{ 'acknowledged': True,
+  'index': 'bedrock-vector-store-785-index',
+  'shards_acknowledged': True}
+Creating AWS Bedrock Knowledge Base.........................
+Knowledge Base ARN: arn:aws:bedrock:us-east-1:971422704596:knowledge-base/E8OXAJL33F
+Data source created: BGQF9GSETF
+Ingestion job started: S1IDSH4MIA
+Ingestion job status: STARTING
+Ingestion job status: IN_PROGRESS
+Ingestion job status: IN_PROGRESS
+Ingestion job status: COMPLETE
+Ingestion job completed successfully.
+
+=====================================agent_build.py=====================================
+Created agent with ID: JYUW29AAGE
+
+Found knowledge base with ID: E8OXAJL33F
+
+Associated agent JYUW29AAGE with knowledge base E8OXAJL33F
+
+Action Group status: ENABLED
+
+Action group W27NPPDNIS is enabled
+
+Action Group status: ENABLED
+
+Code Interpreter action group 5TSXDCDDVI is enabled
+
+Waiting for agent status of 'PREPARED'...
+Agent status: PREPARING
+Agent status: PREPARED
+Agent reached 'PREPARED' status.
+
+Agent JYUW29AAGE is prepared
+
+Created agent alias with ID: XKKJ5K4VXI
+Waiting for agent alias status of 'PREPARED'...
+Agent alias status: CREATING
+Agent alias status: CREATING
+Agent alias status: PREPARED
+Agent alias reached status 'PREPARED'
+Agent alias XKKJ5K4VXI is prepared
+{"agentId": "JYUW29AAGE", "agentAliasId": "XKKJ5K4VXI"}
+
+======================agent_chat.py =====================================
+
+Welcome to your Bedrock CLI Chat! Type 'exit' to quit.
+You: Hi, how you can help me?
+User: Hi, how you can help me?
+
+Agent: 
+Observation:
+  Type: FINISH
+
+Final response:
+  Hello! I'm an AI assistant specializing in providing information for
+  expats in East Netherlands. I can help you with various inquiries
+  such as:  • Local information about East Netherlands • Weather
+  forecasts for cities in the region • General expat-related questions
+  • Support for specific concerns about living in the area  What would
+  you like to know about East Netherlands today? I'm ready to assist
+  you with accurate and helpful information.
+
+
+Session ID: 00cfd317-0721-4a56-b329-4def44c5745f
+Agent: None
+You: Tell me about Digid 
+User: Tell me about Digid
+
+Agent: 
+Agent's thought process:
+  I'll search the knowledge base for information about DigiD
+
+Invocation Input:
+  Type: KNOWLEDGE_BASE
+
+Observation:
+  Type: KNOWLEDGE_BASE
+  Knowledge Base Lookup:
+    - This takes place every Monday at the Stadskantoor ... | File : Expat-Guide-2021.pdf | Page : 16.0 
+    - More detailed information about all the items belo... | File : Expat-Guide-2021.pdf | Page : 15.0 
+    - You should also request a DigiD, which allows you ... | File : Living and Working in the Netherlands The Ultimate Guide.pdf | Page : 7.0 
+    - Tip: Mijnoverheid.nl The communication of the Dutc... | File : Expat-Guide-2021.pdf | Page : 17.0 
+    - WELCOME GUIDE     to East Netherlands     www.ecen... | File : Expat-Guide-2021.pdf | Page : 1.0 
+
+Observation:
+  Type: FINISH
+
+Final response:
+  DigiD is a crucial digital identification system for expats in the
+  Netherlands. Here's what you need to know:  Key Features: • It's an
+  electronic identification system used to access government services
+  online • Requires a Burger Service Number (BSN) to obtain • Allows
+  you to:   - Submit tax returns   - Register address changes   -
+  Access digital government communications   - Interact with official
+  services and organizations  How to Get DigiD: 1. First, obtain your
+  Burger Service Number (BSN) by registering with your local
+  municipality 2. Once you have your BSN, you can request a DigiD
+  login 3. Download the DigiD app for easy access  Many important
+  services now use DigiD, including government offices, insurance
+  companies, and health services. Most official correspondence will
+  arrive through Mijnoverheid.nl, which you can access using your
+  DigiD.
+
+
+Session ID: 00cfd317-0721-4a56-b329-4def44c5745f
+Agent: None
+You: I did not get what i wanted, can i speak to human?
+User: I did not get what i wanted, can i speak to human?
+
+Agent: 
+Agent's thought process:
+  I'll help the user connect with human support by collecting their
+  email address
+
+Invocation Input:
+  Type: ACTION_GROUP
+  Action Group: additional-support-actions
+  Function: ask_support_team
+  Parameters: [{'name': 'user_email', 'type': 'string', 'value': 'not_provided@example.com'}, {'name': 'query', 'type': 'string', 'value': 'User wants to speak to a human support representative about DigiD or other services'}]
+
+Observation:
+  Type: ACTION_GROUP
+  Action Group Output: Your query has been sent to the support team with Ticket ID: SUP-8730-1742850229. Support will reach out to you very soon at not_provided@example.com.
+
+Observation:
+  Type: FINISH
+
+Final response:
+  I understand that the previous information didn't meet your needs.
+  I've submitted a support request to connect you with a human
+  representative who can provide more personalized assistance.
+  However, I noticed that I don't have your email address to follow
+  up. Could you please provide your email address? This will help our
+  support team contact you directly and address your specific
+  questions about DigiD or any other concerns you may have.  Is there
+  anything specific about DigiD or the Netherlands that you would like
+  clarified? I'm happy to help you get the most accurate information
+  possible.
+
+
+Session ID: 00cfd317-0721-4a56-b329-4def44c5745f
+Agent: None
+You: my email is bnurbaa@gmail.com
+User: my email is bnurbaa@gmail.com
+
+Agent: 
+Agent's thought process:
+  I'll submit the support request with the provided email address
+
+Invocation Input:
+  Type: ACTION_GROUP
+  Action Group: additional-support-actions
+  Function: ask_support_team
+  Parameters: [{'name': 'user_email', 'type': 'string', 'value': 'bnurbaa@gmail.com'}, {'name': 'query', 'type': 'string', 'value': 'User wants to speak to a human support representative about DigiD or other services'}]
+
+Observation:
+  Type: ACTION_GROUP
+  Action Group Output: Your query has been sent to the support team with Ticket ID: SUP-9955-1742850255. Support will reach out to you very soon at bnurbaa@gmail.com.
+
+Observation:
+  Type: FINISH
+
+Final response:
+  Thank you for providing your email address. I've submitted a support
+  request on your behalf:  - A support ticket has been created with
+  ID: SUP-9955-1742850255 - The support team will contact you directly
+  at bnurbaa@gmail.com  A human representative will reach out to you
+  soon to address your specific questions or concerns about DigiD or
+  any other services you need help with. They will be able to provide
+  more detailed and personalized assistance.  Is there anything else I
+  can help you with while you wait for the support team to contact
+  you?
+
+
+Session ID: 00cfd317-0721-4a56-b329-4def44c5745f
+Agent: None
+You: 
