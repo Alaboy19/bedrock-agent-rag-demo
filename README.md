@@ -42,6 +42,8 @@ Create .env variables and set these:
 4. FOUNDATION_MODEL='us.anthropic.claude-3-5-haiku-20241022-v1:0', the model to which you get access under your agent role below
 5. AGENT_RESOURCE_ROLE_ARN = agent_role resource name that you have created in previously, step 2
 
+We will use .env file to dynamically set env values to pass from one output to next input
+
 # Execution Stages. 
 
 ## Stage 1. Create S3 bucket and upload docs and creates lambda function for agent logic
