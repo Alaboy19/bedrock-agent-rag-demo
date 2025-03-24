@@ -50,7 +50,7 @@ Create .env variables and set these:
  ``` 
 ## Stage 2. Create knowledgebase from these docs 
 
-Ideally run following command with terraform, but turns out last version, v5.92.0 terraform does not support  data sync from s3 to knowledge base yet. Instead, we can follow sdk with boto3 for that. First, need to create a collection with
+Ideally want to create full pipeline of knowledge base with terraform, but turns out last version, v5.92.0 terraform does not support  data sync from s3 to knowledge base yet. Instead, we can follow sdk with boto3 for that. First, need to create a collection with
 ```sh 
 python src/kb/collection_build.py
  ```
