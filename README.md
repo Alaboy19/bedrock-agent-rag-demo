@@ -1,3 +1,12 @@
+## Simple System Diagram 
+![Alt text](image.png)
+
+## Business logic 
+This agent helps expats to adapt in east Netherlands. It can help with general information looking up at his knowledge base. Also, it has some additional support functions and uses lambda handler to process it's actions. 
+
+## More context
+See execution.log to get context about output of each section. Also, to get context of the thought process of the agent in chat stream. 
+
 ## Pre-requesites(assuming you have brew installed)
 1. Install Python(if you don't have one) 
 ```sh
@@ -74,13 +83,6 @@ This initates the CLI chat with agent that has some limited capabilites for demo
  python src/agent/agent_chat.py
   ```
 
-## Simple System Diagram 
-![Alt text](image.png)
 
-## Business logic 
-This agent helps expats to adapt in east Netherlands. It can help with general information looking up at his knowledge base. Also, it has some additional support functions and uses lambda handler to process it's actions. 
-
-## More context
-See execution.log to get context about output of each section. Also, to get context of the thought process of the agent in chat stream. 
 
 
